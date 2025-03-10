@@ -1,0 +1,9 @@
+services:
+  fpv-shop-db:
+    image: postgres:16.1
+    environment:
+      POSTGRES_DB: fpv-shop
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - '5533:5432'
