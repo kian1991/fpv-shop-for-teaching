@@ -18,6 +18,7 @@ export const category_enum = pgEnum('category_enum', [
   'Beauty & Health',
   'Gifts',
 ]);
+
 export const status_enum = pgEnum('status_enum', [
   'Pending',
   'Shipped',

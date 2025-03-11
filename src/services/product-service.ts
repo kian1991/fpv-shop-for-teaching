@@ -1,5 +1,6 @@
 // src/services/productService.ts
 import { NewProduct, Product } from '../db/schema';
+import { ENV } from '../env';
 import { ProductRepository } from '../repositories/products-repository';
 
 export const ProductService = {

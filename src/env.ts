@@ -1,5 +1,6 @@
 import { z } from 'zod';
 
+// Typeing
 declare module 'bun' {
   interface Env {
     DATABASE_URL: string;
@@ -14,7 +15,7 @@ const parsedEnv = EnvSchema.safeParse(process.env);
 
 if (!parsedEnv.success) {
   console.log(
-    `Loading Env failed: ${JSON.stringify(parsedEnv.error.format())}`
+    `Loading Env failed: ${JSON.stringify(parsedEnv.error.format(), null, 2)}`
   );
   process.exit(1);
 }
