@@ -12,12 +12,15 @@ import { HTTPException } from 'hono/http-exception';
 
 export const OrderService = {
   async create(orderWithPositions: OrderPost): Promise<Order> {
-    await db.transaction(async (tx) => {
+    const result = await db.transaction(async (tx) => {
       // Step #1: create order and get id
       const [insertedOrder] = await tx
         .insert(orders)
-        .values({ status: orderWithPositions.status })
-        .returning({ id: orders.id });
+        .values({
+          status: orderWithPositions.status,
+          userId: orderWithPositions.userId,
+        })
+        .returning();
 
       // Step #2: Get products and prices
       const relatedProducts = await tx.query.products.findMany({
@@ -32,8 +35,9 @@ export const OrderService = {
         orderWithPositions.orderPositions.map((position, index) => {
           if (!relatedProducts[index])
             throw new HTTPException(400, {
-              message: `position with id ${position.productId} has not been found.`,
+              message: `Product with id ${position.productId} has not been found.`,
             });
+
           return {
             orderId: insertedOrder.id,
             price: relatedProducts[index].price,
@@ -43,6 +47,9 @@ export const OrderService = {
         });
 
       await tx.insert(orderPositions).values(orderPositionsToInsert);
+      return insertedOrder;
     });
+
+    return result;
   },
 };

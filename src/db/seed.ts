@@ -1,6 +1,7 @@
 import { singleConnectionDb as db } from './client';
 import {
   products,
+  users,
   orders,
   orderPositions,
   category_enum,
@@ -9,6 +10,13 @@ import {
 
 async function seed() {
   console.log('Seeding database...');
+
+  // user
+  await db.insert(users).values({
+    email: 'kianluetke@gmail.com',
+    firstname: 'Kian',
+    lastname: 'Lütke',
+  });
 
   // Produkte hinzufügen
   const insertedProducts = await db
@@ -62,6 +70,7 @@ async function seed() {
   const insertedOrder = await db
     .insert(orders)
     .values({
+      userId: 1,
       status: status_enum.enumValues[0],
     })
     .returning();
