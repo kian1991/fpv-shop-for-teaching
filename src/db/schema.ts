@@ -33,6 +33,7 @@ export const products = pgTable('products', {
   id: serial().primaryKey(),
   name: text().notNull(),
   category: category_enum().notNull(),
+  price: decimal().notNull(),
   imageUrl: text('image_url').notNull(),
   description: text().notNull(),
 });
@@ -58,20 +59,26 @@ export const NewProductSchema = createInsertSchema(products, {
 // 1. Table definition
 export const orders = pgTable('orders', {
   id: serial().primaryKey(),
+  // userId: integer().references(() => users.id),
   status: status_enum().notNull(),
   createdAt: date('created_at').notNull().defaultNow(),
 });
 
 // 2. realations
-export const ordersRelations = relations(orders, ({ many }) => ({
+export const ordersRelations = relations(orders, ({ many, one }) => ({
   orderPositions: many(orderPositions, {
     relationName: 'orders_to_order_positions',
+  }),
+  user: one(users, {
+    fields: [orders.userId],
+    references: [users.id],
+    relationName: 'orders_to_users',
   }),
 }));
 
 // 3. types
-export const Order = typeof orders.$inferSelect;
-export const NewOrder = typeof orders.$inferInsert;
+export type Order = typeof orders.$inferSelect;
+export type NewOrder = typeof orders.$inferInsert;
 
 // 4. Zod
 export const NewOrderSchema = createInsertSchema(orders);
@@ -108,5 +115,21 @@ export const orderPositionsRelations = relations(orderPositions, ({ one }) => ({
 }));
 
 // 3. types
+export type OrderPosition = typeof orderPositions.$inferSelect;
+export type NewOrderPosition = typeof orderPositions.$inferInsert;
 
 // 4. Zod
+export const NewOrderPositionSchema = createInsertSchema(orderPositions);
+
+const users = pgTable('users', {
+  id: serial().primaryKey(),
+  firstname: text(),
+  lastname: text(),
+  email: text(),
+});
+
+export const userRelations = relations(users, ({ many }) => ({
+  orders: many(orders, {
+    relationName: 'orders_to_users',
+  }),
+}));

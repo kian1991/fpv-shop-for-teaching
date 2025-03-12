@@ -17,6 +17,7 @@ async function seed() {
       {
         name: 'FPV Racing Drone',
         category: category_enum.enumValues[1],
+        price: '299.99',
         imageUrl: 'https://example.com/fpv-racing-drone.jpg',
         description:
           'High-speed FPV racing drone with powerful motors and long-range transmission.',
@@ -24,6 +25,7 @@ async function seed() {
       {
         name: 'Cinewhoop Drone',
         category: category_enum.enumValues[1],
+        price: '199.99',
         imageUrl: 'https://example.com/cinewhoop.jpg',
         description:
           'A compact cinewhoop drone perfect for cinematic FPV footage.',
@@ -31,6 +33,7 @@ async function seed() {
       {
         name: 'FPV Goggles',
         category: category_enum.enumValues[1],
+        price: '149.99',
         imageUrl: 'https://example.com/fpv-goggles.jpg',
         description:
           'High-resolution FPV goggles with low-latency video transmission.',
@@ -38,12 +41,14 @@ async function seed() {
       {
         name: 'LiPo Battery 6S',
         category: category_enum.enumValues[1],
+        price: '59.99',
         imageUrl: 'https://example.com/lipo-6s.jpg',
         description: 'A high-capacity 6S LiPo battery for FPV drones.',
       },
       {
         name: 'TBS Crossfire Module',
         category: category_enum.enumValues[1],
+        price: '99.99',
         imageUrl: 'https://example.com/tbs-crossfire.jpg',
         description:
           'Long-range control module for FPV drones with ultra-low latency.',

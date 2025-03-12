@@ -1,10 +1,13 @@
 import { Hono } from 'hono';
-import { ENV } from './env';
+import { errorMiddleware } from './error-middleware';
+import { db } from './db/client';
 
 const app = new Hono();
 
-app.get('/', (c) => {
-  return c.text(`${ENV.DATABASE_URL}`);
+app.get('/', async (c) => {
+  return c.json({ orders: await db.query.orders.findMany() });
 });
+
+app.onError(errorMiddleware);
 
 export default app;
