@@ -6,6 +6,7 @@ import {
   orders,
   products,
 } from '../db/schema';
+import { OrderRepository } from '../repositories/order-repository';
 import { OrderPost } from '../zod/api-schemas';
 import { inArray } from 'drizzle-orm';
 import { HTTPException } from 'hono/http-exception';
@@ -14,13 +15,10 @@ export const OrderService = {
   async create(orderWithPositions: OrderPost): Promise<Order> {
     const result = await db.transaction(async (tx) => {
       // Step #1: create order and get id
-      const [insertedOrder] = await tx
-        .insert(orders)
-        .values({
-          status: orderWithPositions.status,
-          userId: orderWithPositions.userId,
-        })
-        .returning();
+      const insertedOrder = await OrderRepository(tx).create({
+        status: orderWithPositions.status,
+        userId: orderWithPositions.userId,
+      });
 
       // Step #2: Get products and prices
       const relatedProducts = await tx.query.products.findMany({
@@ -30,7 +28,7 @@ export const OrderService = {
         ),
       });
 
-      // Step #4: insert orderPositions and map prices
+      // Step #3: insert orderPositions and map prices
       const orderPositionsToInsert: NewOrderPosition[] =
         orderWithPositions.orderPositions.map((position, index) => {
           if (!relatedProducts[index])
