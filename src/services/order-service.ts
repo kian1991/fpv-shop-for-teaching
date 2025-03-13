@@ -10,6 +10,7 @@ import { OrderRepository } from '../repositories/order-repository';
 import { OrderPost } from '../zod/api-schemas';
 import { inArray } from 'drizzle-orm';
 import { HTTPException } from 'hono/http-exception';
+import { ProductRepository } from '../repositories/product-repository';
 
 export const OrderService = {
   async create(orderWithPositions: OrderPost): Promise<Order> {
@@ -21,12 +22,12 @@ export const OrderService = {
       });
 
       // Step #2: Get products and prices
-      const relatedProducts = await tx.query.products.findMany({
-        where: inArray(
+      const relatedProducts = await ProductRepository(tx).findMany(
+        inArray(
           products.id,
           orderWithPositions.orderPositions.map((pos) => pos.productId) // => [1, 3, 2]
-        ),
-      });
+        )
+      );
 
       // Step #3: insert orderPositions and map prices
       const orderPositionsToInsert: NewOrderPosition[] =

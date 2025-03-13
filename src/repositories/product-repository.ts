@@ -1,20 +1,32 @@
 // src/database/productRepository.ts
-import { eq } from 'drizzle-orm';
-import { db } from '../db/client';
+import { eq, SQL } from 'drizzle-orm';
+import { db, Transaction } from '../db/client';
 import { products, Product, NewProduct } from '../db/schema';
 
-export const ProductRepository = {
-  async create(newProduct: NewProduct): Promise<Product> {
-    const [result] = await db.insert(products).values(newProduct).returning();
-    return result;
-  },
+export const ProductRepository = (tx?: Transaction) => {
+  const client = tx ?? db;
+  return {
+    async create(newProduct: NewProduct): Promise<Product> {
+      const [result] = await client
+        .insert(products)
+        .values(newProduct)
+        .returning();
+      return result;
+    },
 
-  async findById(id: number): Promise<Product | null> {
-    const [result] = await db // array destructuring
-      .select()
-      .from(products)
-      .where(eq(products.id, id));
+    async findMany(condition?: SQL<unknown>) {
+      return client.query.products.findMany({
+        where: condition,
+      });
+    },
 
-    return result;
-  },
+    async findById(id: number): Promise<Product | null> {
+      const [result] = await client // array destructuring
+        .select()
+        .from(products)
+        .where(eq(products.id, id));
+
+      return result;
+    },
+  };
 };
