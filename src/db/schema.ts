@@ -122,8 +122,13 @@ export type NewOrderPosition = typeof orderPositions.$inferInsert;
 // 4. Zod
 export const NewOrderPositionSchema = createInsertSchema(orderPositions);
 
+export const addresses = pgTable('addresses', {
+  id: serial().primaryKey(),
+});
+
 export const users = pgTable('users', {
   id: serial().primaryKey(),
+  address: integer().references(() => addresses.id),
   firstname: text(),
   lastname: text(),
   email: text(),

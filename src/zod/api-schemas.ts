@@ -1,16 +1,18 @@
 import { z } from 'zod';
-import { NewOrderSchema } from '../db/schema';
+
+export const IdSchema = z.coerce.number({ message: 'Invalid id provided.' });
 
 // POST Route
-export const OrderPostSchema = NewOrderSchema.extend({
+const OrderPositionSchema = z.object({
+  productId: IdSchema,
+  quantity: z.number(),
+});
+
+export const OrderPostSchema = z.object({
+  userId: IdSchema,
   orderPositions: z
-    .array(
-      z.object({
-        productId: z.number(),
-        quantity: z.coerce.string(),
-      })
-    )
-    .nonempty(),
+    .array(OrderPositionSchema)
+    .nonempty('No order positions provided.'),
 });
 
 export type OrderPost = z.infer<typeof OrderPostSchema>;
