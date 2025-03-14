@@ -2,7 +2,7 @@
 import { ProductService } from '../services/product-service';
 import { describe, expect, it, mock } from 'bun:test';
 import { Product, NewProduct } from '../db/schema';
-import { ProductRepository } from '../repositories/product-repository';
+import { ProductRepository } from '../repositories/product.repository';
 
 const createProductMock = mock();
 const getProductByIdMock = mock();

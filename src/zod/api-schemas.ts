@@ -5,7 +5,7 @@ export const IdSchema = z.coerce.number({ message: 'Invalid id provided.' });
 // POST Route
 const OrderPositionSchema = z.object({
   productId: IdSchema,
-  quantity: z.number(),
+  quantity: z.string(),
 });
 
 export const OrderPostSchema = z.object({

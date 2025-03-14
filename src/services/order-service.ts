@@ -10,7 +10,7 @@ import { OrderRepository } from '../repositories/order-repository';
 import { OrderPost } from '../zod/api-schemas';
 import { inArray } from 'drizzle-orm';
 import { HTTPException } from 'hono/http-exception';
-import { ProductRepository } from '../repositories/product-repository';
+import { ProductRepository } from '../repositories/product.repository';
 
 export const OrderService = {
   async create(orderWithPositions: OrderPost): Promise<Order> {

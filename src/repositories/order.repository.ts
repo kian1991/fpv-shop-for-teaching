@@ -1,10 +1,10 @@
 import { eq } from 'drizzle-orm';
-import { db } from '../db/client';
-import { Order, orders } from '../db/schema';
+import { Db, db as pool, Transaction } from '../db/client';
+import { NewOrder, Order, orders } from '../db/schema';
 
-export const OrderRepository = {
-  async findMany(): Promise<Order[]> {
-    return await db.select().from(orders);
+export const OrderRepository = (db: Db | Transaction = pool) => ({
+  findMany(): Promise<Order[]> {
+    return db.select().from(orders);
   },
   findById(id: number) {
     return db.query.orders.findFirst({
@@ -18,4 +18,7 @@ export const OrderRepository = {
       where: eq(orders.id, id),
     });
   },
-};
+  create(order: NewOrder) {
+    return db.insert(orders).values(order).returning();
+  },
+});
