@@ -23,6 +23,6 @@ productRouter.get('/:id', async (c) => {
 
 productRouter.get('/', async (c) => {
   const { pageSize, page } = PaginationSchema.parse(c.req.queries());
-  const product = await ProductService.getAllProducts(pageSize, page);
-  return product ? c.json(product) : c.notFound();
+  const products = await ProductService.getAllProducts(pageSize, page);
+  return products ? c.json(products) : c.notFound();
 });
