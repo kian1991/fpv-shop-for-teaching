@@ -18,7 +18,7 @@ export const ProductService = {
     page: number = 1
   ): Promise<{ data: Product[]; pagination: Pagination }> {
     const products = await ProductRepository().findMany(
-      undefined,
+      undefined, // condition
       pageSize,
       page
     );

@@ -22,7 +22,7 @@ productRouter.get('/:id', async (c) => {
 });
 
 productRouter.get('/', async (c) => {
-  const { pageSize, page } = PaginationSchema.parse(c.req.queries());
+  const { pageSize, page } = PaginationSchema.parse(c.req.queries()); // /products?pageSize=25&page=1
   const products = await ProductService.getAllProducts(pageSize, page);
   return products ? c.json(products) : c.notFound();
 });
