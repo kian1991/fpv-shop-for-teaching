@@ -7,7 +7,7 @@ const HomePage: React.FC = () => {
       <main
         className="grid min-h-screen w-full place-items-center"
         style={{
-          backgroundImage: "url(/img/hero-banner.webP)",
+          backgroundImage: "url(img/hero-banner.webp)",
           backgroundPosition: "center",
           backgroundSize: "cover",
           backgroundRepeat: "no-repeat",

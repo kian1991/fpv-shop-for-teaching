@@ -1,9 +1,12 @@
-export type Category =
-  | "Clothing"
-  | "Electronics"
-  | "Home"
-  | "Beauty & Health"
-  | "Gifts";
+export const categories = [
+  "Clothing",
+  "Electronics",
+  "Home",
+  "Beauty & Health",
+  "Gifts",
+] as const;
+
+export type Category = (typeof categories)[number];
 
 export type Product = {
   id: number;
@@ -13,6 +16,8 @@ export type Product = {
   imageUrl: string;
   description: string;
 };
+
+export type NewProduct = Omit<Product, "id">;
 
 export interface PexelsApiResponse {
   page: number;
@@ -46,3 +51,28 @@ export interface PhotoSrc {
   landscape: string;
   tiny: string;
 }
+
+export type Pagination = {
+  pageSize: number;
+  page: number;
+  totalItems: number;
+};
+
+export type ErrorResponse = {
+  error: string;
+};
+
+export type PaginatedAPIResponse<T> = {
+  data: T;
+  pagination: Pagination;
+};
+
+export type CombinedAPIResponse<T> = PaginatedAPIResponse<T> & ErrorResponse;
+
+export type APIResponse<T> =
+  | {
+      data: T;
+    }
+  | {
+      error: string;
+    };

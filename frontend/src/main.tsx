@@ -6,6 +6,7 @@ import { createBrowserRouter, RouterProvider } from "react-router";
 import HomePage from "./page/home";
 import { Products } from "./page/products";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ProductAdd } from "./page/product-add";
 
 const browserRouter = createBrowserRouter([
   {
@@ -17,8 +18,12 @@ const browserRouter = createBrowserRouter([
         element: <HomePage />,
       },
       {
-        path: "/products",
+        path: "products",
         element: <Products />,
+      },
+      {
+        path: "product-add",
+        element: <ProductAdd />,
       },
     ],
   },
