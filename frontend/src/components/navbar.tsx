@@ -1,5 +1,6 @@
 import { Link } from "react-router";
 import { useCartStore } from "../store/useCartStore";
+import { SearchBar } from "./search-bar";
 
 export const Navbar = () => {
   const items = useCartStore((state) => state.items);
@@ -18,11 +19,7 @@ export const Navbar = () => {
         </Link>
       </div>
       <div className="flex gap-2">
-        <input
-          type="text"
-          placeholder="Search"
-          className="input input-bordered w-24 md:w-auto"
-        />
+        <SearchBar />
         <button className="btn btn-secondary">
           <svg
             xmlns="http://www.w3.org/2000/svg"
